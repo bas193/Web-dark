@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARK STORE OFFICIAL</title>
+<style>
+:root{--bg:#0A0F1E;--card:#111827;--kuning:#FFC107;--hijau:#22C55E}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:var(--bg);color:#fff}
+header{background:linear-gradient(90deg,#FFC107,#FF8C00);padding:20px;text-align:center;color:#000}
+.container{padding:15px;max-width:1100px;margin:auto}
+.nav{display:flex;gap:10px;margin:15px 0}
+.nav button{flex:1;padding:12px;border:none;border-radius:10px;background:#1E293B;color:#fff;cursor:pointer;font-weight:bold}
+.nav button.active{background:var(--kuning);color:#000}
+.filter{display:flex;gap:10px;overflow-x:auto;padding:10px 0}
+.btn-kat{padding:8px 16px;border-radius:20px;background:#1E293B;border:none;color:#fff;cursor:pointer}
+.btn-kat.active{background:var(--kuning);color:#000;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:var(--card);border:1px solid #1E293B;padding:15px;border-radius:14px;text-align:center}
+.harga{color:var(--kuning);font-size:20px;font-weight:bold}
+.beli{width:100%;background:var(--hijau);border:none;color:#fff;padding:10px;border-radius:10px;font-weight:bold;cursor:pointer}
+.box{background:var(--card);padding:15px;border-radius:12px;margin-bottom:15px}
+input,select{width:100%;padding:10px;margin:8px 0;background:#0A0F1E;border:1px solid #1E293B;border-radius:8px;color:#fff}
+.btn-simpan{width:100%;background:var(--kuning);color:#000;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--hijau);padding:10px 20px;border-radius:8px;display:none}
+#toast.show{display:block}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><h1>⚡ DARK STORE OFFICIAL ⚡</h1><p>Top Up Game & Jual Reach Channel Termurah</p></header>
+<div class="container">
+  <div class="nav">
+    <button class="active" onclick="tab('toko',this)">🏪 Kedai</button>
+    <button onclick="tab('admin',this)">⚙️ Admin</button>
+  </div>
+  <div id="toko"><div class="filter" id="filter"></div><div class="grid" id="produk"></div></div>
+  <div id="admin" style="display:none">
+    <div class="box"><h3>➕ Tambah Produk Baru</h3>
+      <select id="katPilih"></select><input id="namaP" placeholder="Nama Produk"><input id="hargaP" placeholder="Harga RM">
+      <input id="prosesP" value="1-5 Minit" placeholder="Masa Proses"><button class="btn-simpan" onclick="tambahProduk()">SIMPAN</button>
+    </div>
+    <div class="box"><h3>📦 Senarai Produk</h3><div id="tabelP"></div></div>
+  </div>
+</div><div id="toast"></div>
+<script>
+const WA = "60194939829";
+function getData(){if(!localStorage.darkstore){localStorage.darkstore=JSON.stringify({kategori:[{id:1,nama:"Reach",icon:"📈"},{id:2,nama:"FF",icon:"💎"},{id:3,nama:"ML",icon:"🛡️"}],produk:[{id:1,kat:1,nama:"10 Reach",harga:"RM0.30",proses:"1-3 Minit"},{id:2,kat:1,nama:"500 Reach",harga:"RM15.00",proses:"15-30 Minit"}]})}return JSON.parse(localStorage.darkstore);}
+function saveData(d){localStorage.darkstore=JSON.stringify(d)}
+const ALERT=(t)=>{toast.innerText=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000)}
+function tab(n,el){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));el.classList.add('active');toko.style.display=n=='toko'?'block':'none';admin.style.display=n=='admin'?'block':'none';if(n=='admin')loadAdmin();}
+function loadToko(){let db=getData();filter.innerHTML=`<button class="btn-kat active" onclick="filter(0,this)">🔥 Semua</button>`+db.kategori.map(k=>`<button class="btn-kat" onclick="filter(${k.id},this)">${k.icon} ${k.nama}</button>`).join('');filter(0,document.querySelector('.btn-kat'))}
+function filter(id,el){document.querySelectorAll('.btn-kat').forEach(b=>b.classList.remove('active'));el.classList.add('active');let db=getData();let list=id==0?db.produk:db.produk.filter(p=>p.kat==id);produk.innerHTML=list.map(p=>{let k=db.kategori.find(x=>x.id==p.kat);return`<div class="card"><div style="font-size:35px">${k.icon}</div><h3>${p.nama}</h3><p style="font-size:12px;color:#94A3B8">⚡ ${p.proses}</p><p class="harga">${p.harga}</p><button class="beli" onclick="order('${p.nama}','${p.harga}','${k.nama}')">BELI SEKARANG</button></div>`}).join('')}
+function order(n,h,k){window.open(`https://wa.me/${WA}?text=*ORDER*%0A${k} - ${n}%0A${h}`,'_blank');ALERT("Redirect ke WhatsApp...")}
+function loadAdmin(){let db=getData();katPilih.innerHTML=db.kategori.map(k=>`<option value="${k.id}">${k.icon} ${k.nama}</option>`).join('');tabelP.innerHTML=db.produk.map((p,i)=>{let k=db.kategori.find(x=>x.id==p.kat);return`<p>${i+1}. ${k.icon} ${p.nama} - ${p.harga} <button onclick="hapus(${p.id})" style="background:red;color:#fff;border:none;padding:5px 10px;float:right">X</button></p>`}).join('')}
+function tambahProduk(){let k=katPilih.value,n=namaP.value,h=hargaP.value,pr=prosesP.value;if(!n||!h)return ALERT('Lengkapkan');let db=getData();db.produk.push({id:Date.now(),kat:+k,nama:n,harga:h,proses:pr});saveData(db);ALERT('✅ Disimpan');namaP.value='';hargaP.value='';loadAdmin();loadToko();}
+function hapus(id){if(confirm('Hapus?')){let db=getData();db.produk=db.produk.filter(p=>p.id!=id);saveData(db);loadAdmin();loadToko();}}
+loadToko();
+</script>
+</body>
+  </html>
