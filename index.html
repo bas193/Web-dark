@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARK STORE OFFICIAL</title>
+<style>
+body{background:#0A0F1E;color:#fff;font-family:sans-serif;margin:0}
+header{background:linear-gradient(90deg,#FFC107,#FF8C00);color:#000;padding:15px;text-align:center}
+header h1{margin:0} .container{padding:15px;max-width:900px;margin:auto}
+.nav{display:flex;gap:10px;margin:15px 0}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;background:#1E293B;color:#fff;font-weight:bold;cursor:pointer}
+.nav button.active{background:#FFC107;color:#000}
+.box{background:#111827;padding:15px;border-radius:10px;margin:10px 0}
+input{width:100%;padding:10px;margin:8px 0;background:#222;border:1px solid #444;color:#fff;border-radius:6px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:#111827;padding:15px;border-radius:12px;text-align:center;border:1px solid #222}
+.harga{color:#FFC107;font-weight:bold;font-size:20px}
+.beli{background:#22C55E;color:#fff;border:none;padding:10px;width:100%;border-radius:8px;font-weight:bold;cursor:pointer}
+.btn-simpan{width:100%;background:#FFC107;color:#000;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22C55E;padding:10px 20px;border-radius:8px;display:none}
+#toast.show{display:block}
+</style>
+</head>
+<body>
+
+<header><h1>⚡ DARK STORE OFFICIAL ⚡</h1></header>
+
+<div class="container">
+  <div class="nav">
+    <button class="active" onclick="show('toko',this)">🏪 Kedai</button>
+    <button onclick="show('admin',this)">⚙️ Admin</button>
+  </div>
+
+  <div id="toko">
+    <div id="produk" class="grid"></div>
+  </div>
+
+  <div id="admin" style="display:none">
+    <div class="box">
+      <h3>➕ Tambah Produk</h3>
+      <input id="nama" placeholder="Nama Produk - Contoh: 500 Reach">
+      <input id="harga" placeholder="Harga - Contoh: RM15.00">
+      <button class="btn-simpan" onclick="add()">SIMPAN PRODUK</button>
+    </div>
+    <div class="box">
+      <h3>📦 Senarai Produk</h3>
+      <div id="list"></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const WA = "60194939829"; // TUKAR NOMBOR KAU DISINI
+
+let produk = JSON.parse(localStorage.produk || '[{"nama":"10 Reach","harga":"RM0.30"},{"nama":"500 Reach","harga":"RM15.00"},{"nama":"1000 Reach","harga":"RM28.00"}]');
+const ALERT = (t)=>{toast.innerText=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000)}
+
+function show(id,el){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'))
+  el.classList.add('active')
+  document.getElementById('toko').style.display = id=='                                                                </html>
